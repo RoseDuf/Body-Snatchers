@@ -9,7 +9,7 @@ namespace Game.Object
         protected Rigidbody rb;
         protected GravityAttractor planet;
 
-        private void Awake()
+        protected void Awake()
         {
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;

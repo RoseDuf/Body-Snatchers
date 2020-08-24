@@ -13,8 +13,15 @@ namespace Game.Player
         private Vector3 moveAmount;
         private Vector3 smoothMoveVelocity;
         private Vector3 inputVector;
-        bool isMoving;
-        
+        private Transform childObject;
+        private bool isMoving;
+
+        private new void Awake()
+        {
+            base.Awake();
+            childObject = transform.GetChild(0).transform;
+        }
+
         private void Start()
         {
             inputVector = new Vector3(0, 0, 0);
@@ -50,6 +57,7 @@ namespace Game.Player
             //float weight_modifier = (1f + velocity_weight);
 
             //move character, transform.TransformDirection(moveAmount) changes world coordinates to local coordinates
+
             rb.velocity = transform.TransformDirection(moveAmount) * speed * Time.deltaTime;
 
             //More ways of moving character:
@@ -60,8 +68,8 @@ namespace Game.Player
         private void FaceDirection()
         {
             //rotate rigidbody
-            //if (isMoving)
-                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(inputVector), rotationSpeed * Time.deltaTime);
+            if (isMoving)
+                childObject.rotation = Quaternion.Slerp(childObject.rotation, Quaternion.LookRotation(inputVector), rotationSpeed * Time.deltaTime);
         }
     }
 
