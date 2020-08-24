@@ -14,9 +14,11 @@ namespace Game.Camera
         [SerializeField] float smoothingSpeed;
 
         private Vector3 refVelocity;
+        private float fixedLookAtRotation;
 
         private void Start()
         {
+            fixedLookAtRotation = transform.rotation.z;
             HandleCamera();
         }
 
@@ -33,19 +35,19 @@ namespace Game.Camera
                 return;
             }
 
-            Vector3 worldPosition = (Vector3.forward * -distance) + (Vector3.up * height);
+            Vector3 worldPosition = (Vector3.forward * -distance) + (target.up * height);
             //Debug.DrawLine(target.position, worldPosition, Color.red);
 
-            Vector3 rotatedVector = Quaternion.AngleAxis(angle, Vector3.up) * worldPosition;
+            Vector3 rotatedVector = Quaternion.AngleAxis(angle, target.up) * worldPosition;
 
             //move camera position to follow target
             Vector3 targetPosition = target.position;
-            targetPosition.y = 0f;
+            //targetPosition.y = 0f;
             Vector3 finalPosition = targetPosition + rotatedVector;
 
             //transform.position = finalPosition;
             transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref refVelocity, smoothingSpeed);
-            transform.LookAt(target.position);
+            transform.LookAt(target.position, target.up);
         }
 
         private void OnDrawGizmos()

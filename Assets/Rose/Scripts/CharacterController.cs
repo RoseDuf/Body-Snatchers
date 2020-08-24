@@ -1,23 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Object;
 
-namespace Game.Character
+namespace Game.Player
 {
-
-    public class CharacterController : MonoBehaviour
+    public class CharacterController : GravityObject
     {
         [SerializeField] float speed;
         [SerializeField] float rotationSpeed;
-
-        private Rigidbody rb;
-
+        
+        private Vector3 moveAmount;
+        private Vector3 smoothMoveVelocity;
         private Vector3 inputVector;
         bool isMoving;
-
+        
         private void Start()
         {
-            rb = GetComponent<Rigidbody>();
             inputVector = new Vector3(0, 0, 0);
         }
 
@@ -34,12 +33,13 @@ namespace Game.Character
 
         private void HandleInput()
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
 
             isMoving = horizontal != 0 || vertical != 0;
-
-            inputVector = new Vector3(horizontal, 0f, vertical);
+          
+            inputVector = new Vector3(horizontal, 0f, vertical) * speed;
+            moveAmount = Vector3.SmoothDamp(moveAmount, inputVector, ref smoothMoveVelocity, 0.15f);
         }
 
         private void Movement()
@@ -49,9 +49,8 @@ namespace Game.Character
             //float velocity_weight = Mathf.Clamp(food.CountAmount() * 0.1f, 0f, 2f);
             //float weight_modifier = (1f + velocity_weight);
 
-            //movement_vector.y = 2 * Physics.gravity.y * Time.deltaTime;
-            rb.velocity = inputVector * (speed/* / weight_modifier*/) * Time.deltaTime;
-
+            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.deltaTime);
+            //transform.Translate(inputVector * Time.deltaTime);
         }
 
         private void FaceDirection()
