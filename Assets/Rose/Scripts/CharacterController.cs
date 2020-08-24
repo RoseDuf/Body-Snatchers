@@ -38,7 +38,7 @@ namespace Game.Player
 
             isMoving = horizontal != 0 || vertical != 0;
           
-            inputVector = new Vector3(horizontal, 0f, vertical) * speed;
+            inputVector = new Vector3(horizontal, 0f, vertical).normalized;
             moveAmount = Vector3.SmoothDamp(moveAmount, inputVector, ref smoothMoveVelocity, 0.15f);
         }
 
@@ -49,15 +49,19 @@ namespace Game.Player
             //float velocity_weight = Mathf.Clamp(food.CountAmount() * 0.1f, 0f, 2f);
             //float weight_modifier = (1f + velocity_weight);
 
-            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.deltaTime);
+            //move character, transform.TransformDirection(moveAmount) changes world coordinates to local coordinates
+            rb.velocity = transform.TransformDirection(moveAmount) * speed * Time.deltaTime;
+
+            //More ways of moving character:
+            //rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * speed * Time.deltaTime);
             //transform.Translate(inputVector * Time.deltaTime);
         }
 
         private void FaceDirection()
         {
             //rotate rigidbody
-            if (isMoving)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(inputVector), rotationSpeed * Time.deltaTime);
+            //if (isMoving)
+                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(inputVector), rotationSpeed * Time.deltaTime);
         }
     }
 
