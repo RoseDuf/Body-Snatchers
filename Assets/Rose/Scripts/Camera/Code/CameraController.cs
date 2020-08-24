@@ -47,7 +47,7 @@ namespace Game.Camera
 
             //transform.position = finalPosition;
             transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref refVelocity, smoothingSpeed);
-            transform.LookAt(target.position, target.up);
+            transform.LookAt(target.position, target.forward);
         }
 
         private void OnDrawGizmos()

@@ -69,7 +69,7 @@ namespace Game.Player
         {
             //rotate rigidbody
             if (isMoving)
-                childObject.rotation = Quaternion.Slerp(childObject.rotation, Quaternion.LookRotation(inputVector), rotationSpeed * Time.deltaTime);
+                childObject.rotation = Quaternion.Slerp(childObject.rotation, Quaternion.LookRotation(transform.TransformDirection(moveAmount), transform.up), rotationSpeed * Time.deltaTime);
         }
     }
 
