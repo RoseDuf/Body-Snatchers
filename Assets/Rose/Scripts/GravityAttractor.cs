@@ -6,7 +6,7 @@ namespace Game.Object
     public class GravityAttractor : MonoBehaviour
     {
         private const float GRAVITY = -100f;
-
+        
         public void Attract(Transform body)
         {
             Vector3 creatureToPlanetVector = (body.position - transform.position).normalized;

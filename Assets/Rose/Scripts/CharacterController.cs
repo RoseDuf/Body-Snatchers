@@ -52,12 +52,12 @@ namespace Game.Player
         private void Movement()
         {
             //move rigidbody
-            // update velocity weight according the the amount of items you have in your inventory
+
+            //update velocity weight according the the amount of items you have in your inventory
             //float velocity_weight = Mathf.Clamp(food.CountAmount() * 0.1f, 0f, 2f);
             //float weight_modifier = (1f + velocity_weight);
 
             //move character, transform.TransformDirection(moveAmount) changes world coordinates to local coordinates
-
             rb.velocity = transform.TransformDirection(moveAmount) * speed * Time.deltaTime;
 
             //More ways of moving character:
