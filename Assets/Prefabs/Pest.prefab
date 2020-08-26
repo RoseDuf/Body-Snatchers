@@ -154,7 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeUntilNextPoint: 0
-  defaultSpeed: 0
+  speed: 0
+  rotationSpeed: 0
 --- !u!54 &4899282482375324956
 Rigidbody:
   m_ObjectHideFlags: 0

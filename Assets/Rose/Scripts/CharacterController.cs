@@ -7,14 +7,12 @@ namespace Game.Player
 {
     public class CharacterController : GravityObject
     {
-        [SerializeField] float speed;
-        [SerializeField] float rotationSpeed;
-        
         private Vector3 moveAmount;
         private Vector3 smoothMoveVelocity;
         private Vector3 inputVector;
-        private Transform childObject;
         private bool isMoving;
+
+        private Transform childObject;
 
         private new void Awake()
         {
