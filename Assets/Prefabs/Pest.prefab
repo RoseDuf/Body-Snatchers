@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4899282482375324959}
   - component: {fileID: 4899282482375324956}
   m_Layer: 0
-  m_Name: Predator 2
+  m_Name: Pest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b8dc1540de2894ea4e342ef0818be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeUntilNextPoint: 0
+  defaultSpeed: 0
 --- !u!54 &4899282482375324956
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -228,7 +230,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aad82f4f28094194c81f28a76dcd197c, type: 2}
+  - {fileID: 2100000, guid: 7cd9f02eb2d30924787843f0971db508, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

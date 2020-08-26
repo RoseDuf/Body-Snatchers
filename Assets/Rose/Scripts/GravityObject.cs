@@ -9,13 +9,14 @@ namespace Game.Object
         protected Rigidbody rb;
         protected GravityAttractor planet;
         
-        private float time = 0;
+        private float time;
         [SerializeField] float timeUntilNextPoint;
         [SerializeField] float defaultSpeed;
 
-        Vector3 newPoint = new Vector3(0f, 0f, 0f);
+        Vector3 newPoint;
 
-        float angle = 1;
+        Vector3 direction;
+        float angle;
 
         protected void Awake()
         {
@@ -23,6 +24,13 @@ namespace Game.Object
             rb.freezeRotation = true;
             rb.useGravity = false;
             planet = GameObject.FindGameObjectWithTag("planet").GetComponent<GravityAttractor>();
+        }
+
+        private void Start()
+        {
+            time = timeUntilNextPoint + 1;
+            angle = 0;
+            newPoint = new Vector3(0f, 0f, 0f);
         }
 
         private void FixedUpdate()
@@ -39,13 +47,15 @@ namespace Game.Object
                 if (time >= timeUntilNextPoint)
                 {
                     newPoint = GenerateNewPoint();
-                    angle = Mathf.Clamp(Vector3.Angle(transform.up, newPoint - planet.transform.position), 1, 360);
-                    print(newPoint - planet.transform.position);
-                    print(transform.up);
-                    print(angle);
+                    direction = newPoint - transform.position;
+                    //angle = Mathf.Clamp(Vector3.Angle(transform.up, newPoint - planet.transform.position), 1, 360);
                     time = 0;
                 }
-                rb.MovePosition(rb.position + transform.TransformDirection(newPoint) * defaultSpeed/angle * Time.deltaTime);
+                //Debug.DrawLine(planet.transform.position, transform.position);
+                //Debug.DrawLine(planet.transform.position, newPoint);
+
+                rb.MovePosition(rb.position + transform.TransformDirection(direction) * defaultSpeed/angle * Time.deltaTime);
+                FaceDirection();
             }
             else
             {
@@ -53,42 +63,53 @@ namespace Game.Object
             }
         }
 
+        private void FaceDirection()
+        {
+           transform.rotation = Quaternion.LookRotation(transform.TransformDirection(newPoint));
+        }
+
         private Vector3 GenerateNewPoint()
         {
-            Vector3 newPoint = new Vector3(0f, 0f, 0f);
+            Vector3 point = new Vector3(0f, 0f, 0f);
+            Vector3 XZVector = new Vector3(transform.position.x, 0f, transform.position.z);
+            Vector3 YVector = new Vector3(0f, transform.position.y, 0f);
             float planetRimVectorMagnitude = (transform.position - planet.transform.position).magnitude;
-            
-            float anglePhiX = Random.Range(0, 2*Mathf.PI);
-            float angleThetaY = Random.Range(0, 2*Mathf.PI);
-            float anglePhiZ = Random.Range(0, 2*Mathf.PI);
+
+            float anglePhi = Random.Range((Vector3.SignedAngle(Vector3.forward, XZVector, Vector3.up) - 1f), (Vector3.SignedAngle(Vector3.forward, XZVector, Vector3.up) + 1f));
+            float angleTheta = Random.Range((Vector3.Angle(Vector3.up, transform.up) - 1f), (Vector3.Angle(Vector3.up, transform.up) + 1f));
 
             //Do some trig to find the final position vector
             //X
-            newPoint.x = planetRimVectorMagnitude * Mathf.Cos(angleThetaY) * Mathf.Cos(anglePhiX);
+            point.x = planetRimVectorMagnitude * Mathf.Sin(angleTheta * Mathf.Deg2Rad) * Mathf.Sin(anglePhi * Mathf.Deg2Rad);
             ////Y
-            newPoint.y = planetRimVectorMagnitude * Mathf.Sin(angleThetaY);
+            point.y = planetRimVectorMagnitude * Mathf.Cos(angleTheta * Mathf.Deg2Rad);
             ////Z
-            newPoint.z = planetRimVectorMagnitude * Mathf.Cos(angleThetaY) * Mathf.Sin(anglePhiZ);
+            point.z = planetRimVectorMagnitude * Mathf.Sin(angleTheta * Mathf.Deg2Rad) * Mathf.Cos(anglePhi * Mathf.Deg2Rad);
 
-            return newPoint + planet.transform.position;
+            return point + planet.transform.position;
         }
 
         //private void OnDrawGizmos()
         //{
         //    Gizmos.color = new Color(0f, 0f, 1f, 0.25f);
-        //    Vector3 newPoint = new Vector3(0f, 0f, 0f);
+        //    Vector3 point = new Vector3(0f, 0f, 0f);
         //    float planetRimVectorMagnitude = (transform.position - planet.transform.position).magnitude;
-        //    for (int i = 0; i < 2 * Mathf.PI; i++)
+        //    Vector3 XZVector = new Vector3(transform.position.x, 0f, transform.position.z);
+        //    Vector3 YVector = new Vector3(0f, transform.position.y, 0f);
+        //    if (time >= timeUntilNextPoint)
         //    {
-        //        for (int j = 0; j < 2 * Mathf.PI; j++)
+        //        for (float i = (Vector3.Angle(Vector3.up, transform.up) - 1f); i < (Vector3.Angle(Vector3.up, transform.up) + 1f); i++)
         //        {
-        //            newPoint.x = planetRimVectorMagnitude * Mathf.Cos(i) * Mathf.Cos(j);
-        //            //Y
-        //            newPoint.y = planetRimVectorMagnitude * Mathf.Sin(i);
-        //            //Z
-        //            newPoint.z = planetRimVectorMagnitude * Mathf.Cos(i) * Mathf.Sin(j);
+        //            for (float j = (Vector3.Angle(Vector3.forward, XZVector) - 1f); j < (Vector3.Angle(Vector3.forward, XZVector) + 1f); j++)
+        //            {
+        //                point.x = planetRimVectorMagnitude * Mathf.Cos(i * Mathf.Deg2Rad) * Mathf.Cos(j * Mathf.Deg2Rad);
+        //                //Y
+        //                point.y = planetRimVectorMagnitude * Mathf.Sin(i * Mathf.Deg2Rad);
+        //                //Z
+        //                point.z = planetRimVectorMagnitude * Mathf.Cos(i * Mathf.Deg2Rad) * Mathf.Sin(j * Mathf.Deg2Rad);
 
-        //            Gizmos.DrawSphere(newPoint + planet.transform.position, 1.5f);
+        //                Gizmos.DrawSphere(point + planet.transform.position, 1.5f);
+        //            }
         //        }
         //    }
         //}
