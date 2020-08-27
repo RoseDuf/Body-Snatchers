@@ -7,7 +7,7 @@ namespace Game.Camera
 
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] Transform target;
+        Transform target;
         [SerializeField] float height; //above target
         [SerializeField] float distance; //behind or in front of target
         [SerializeField] float angle; //around the target
@@ -18,6 +18,7 @@ namespace Game.Camera
 
         private void Start()
         {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
             fixedLookAtRotation = transform.rotation.z;
             HandleCamera();
         }
@@ -26,6 +27,7 @@ namespace Game.Camera
         void Update()
         {
             HandleCamera();
+            target = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
         protected virtual void HandleCamera()

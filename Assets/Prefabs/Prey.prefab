@@ -105,9 +105,10 @@ GameObject:
   - component: {fileID: 4899282482375324961}
   - component: {fileID: 4899282482375324959}
   - component: {fileID: 4899282482375324956}
+  - component: {fileID: -7144812925920844625}
   m_Layer: 0
-  m_Name: Predator 1
-  m_TagString: Untagged
+  m_Name: Prey
+  m_TagString: Roaming
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,6 +170,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-7144812925920844625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899282482375324966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7994b60b192ea39408cd66f1c4c79e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: {x: 100, y: 500}
+  rotationSpeed: {x: 2, y: 5}
 --- !u!1 &4899282482617315755
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +243,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aad82f4f28094194c81f28a76dcd197c, type: 2}
+  - {fileID: 2100000, guid: 419cf6145cf33e449813af031d53f43b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
