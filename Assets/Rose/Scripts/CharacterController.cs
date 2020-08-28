@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Game.Object;
+using Game.UI;
 
 namespace Game.Player
 {
@@ -130,14 +131,14 @@ namespace Game.Player
 
         private void SwitchBodies(GameObject newBody)
         {
-            tag = "Roaming";
+            Timer.isAlive = false;
             newBody.tag = "Player";
             Destroy(gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.tag == "Roaming")
+            if (tag == "Player" && collision.collider.tag == "Roaming")
             {
                 SwitchBodies(collision.collider.gameObject);
             }
