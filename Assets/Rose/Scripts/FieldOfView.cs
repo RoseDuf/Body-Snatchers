@@ -13,14 +13,14 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask;
 
-    //public Transform childObject;
+    [SerializeField] Transform parentObject;
 
     public List<Transform> visibleTargets = new List<Transform>();
 
-    //private void Awake()
-    //{
-    //    childObject = transform.GetChild(0).transform;
-    //}
+    private void Awake()
+    {
+        parentObject = transform.GetComponentInParent<Transform>();
+    }
 
     private void Start()
     {
@@ -71,7 +71,8 @@ public class FieldOfView : MonoBehaviour
 
     public Vector3 DirFromAngleTheta(float angleTheta/*, bool angleIsGlobal*/)
     {
-        float anglePhi = Vector3.SignedAngle(Vector3.forward, transform.forward, transform.up);
+        //Vector3 XZVector = new Vector3(transform.position.x, 0f, transform.position.z);
+        float anglePhi = Vector3.SignedAngle(parentObject.forward, transform.forward, transform.up);
         //if (!angleIsGlobal)
         //{
         //    angleTheta += transform.eulerAngles.y;
