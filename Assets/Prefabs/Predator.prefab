@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4899282481371271635}
   - component: {fileID: 4899282481371271632}
   - component: {fileID: 4899282481371271633}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4899282482375324959}
   - component: {fileID: 4899282482375324956}
   - component: {fileID: -5987595901377526031}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Predator
   m_TagString: Roaming
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 4899282482617315754}
   - component: {fileID: 4899282482617315748}
   - component: {fileID: 4899282482617315749}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Creature
   m_TagString: Untagged
   m_Icon: {fileID: 0}

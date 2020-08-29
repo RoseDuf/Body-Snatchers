@@ -72,11 +72,13 @@ namespace Game.Player
                 }
                 //Debug.DrawLine(planet.transform.position, transform.position);
                 //Debug.DrawLine(planet.transform.position, newPoint);
-                //Debug.DrawLine(transform.position, direction + transform.position);
+                Debug.DrawLine(transform.position, direction + transform.position - (transform.up * 0.5f));
 
                 //rb.MovePosition(rb.position + transform.TransformDirection(direction) * speed * Time.deltaTime);
                 rb.velocity = direction * speed.x * Time.deltaTime;
                 FaceDirection();
+                
+                Follow(direction + transform.position - (transform.up*0.5f));
             }
             else
             {
@@ -127,6 +129,33 @@ namespace Game.Player
             point.z = planetRimVectorMagnitude * Mathf.Sin(angleTheta * Mathf.Deg2Rad) * Mathf.Cos(anglePhi * Mathf.Deg2Rad);
 
             return point + planet.transform.position;
+        }
+
+        private void Follow(Vector3 direction)
+        {
+            // Bit shift the index of the layer (8) to get a bit mask
+            int layerMask = 1 << 9;
+
+            // This would cast rays only against colliders in layer 8.
+            // But instead we want to collide against everything except layer 8. The ~ operator does this, it inverts a bitmask.
+            layerMask = ~layerMask;
+
+            RaycastHit hit;
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity, layerMask))
+            {
+                //if (hit.collider.tag == "Player")
+                //{
+                print(hit.collider.tag);
+                    Debug.DrawRay(transform.position, direction * hit.distance, Color.yellow);
+                    Debug.Log("Did Hit");
+                //}
+                //else
+                //{
+                //    Debug.DrawRay(transform.position, transform.TransformDirection(direction) * 1000, Color.white);
+                //    Debug.Log("Did not Hit");
+                //}
+            }
         }
 
         private void SwitchBodies(GameObject newBody)
